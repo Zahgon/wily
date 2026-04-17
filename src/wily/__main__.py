@@ -102,36 +102,7 @@ def cli(ctx, debug, config, path, cache):
 @click.pass_context
 def build(ctx, max_revisions, targets, operators, archiver):
     """Build the wily cache."""
-    config = ctx.obj["CONFIG"]
-
-    from wily.commands.build import build
-
-    if max_revisions:
-        logger.debug("Fixing revisions to %s", max_revisions)
-        config.max_revisions = max_revisions
-
-    if operators:
-        logger.debug("Fixing operators to %s", operators)
-        config.operators = operators.strip().split(",")
-
-    if archiver:
-        logger.debug("Fixing archiver to %s", archiver)
-        config.archiver = archiver
-
-    if targets:
-        logger.debug("Fixing targets to %s", targets)
-        config.targets = targets
-
-    build(
-        config=config,
-        archiver=resolve_archiver(config.archiver),
-        operators=resolve_operators(config.operators),
-    )
-    logger.info(
-        _(
-            "Completed building wily history, run `wily report <file>` or `wily index` to see more."
-        )
-    )
+    pass
 
 
 @cli.command(help=_("""Show the history archive in the .wily/ folder."""))
@@ -147,14 +118,7 @@ def build(ctx, max_revisions, targets, operators, archiver):
 )
 def index(ctx, message, wrap):
     """Show the history archive in the .wily/ folder."""
-    config = ctx.obj["CONFIG"]
-
-    if not exists(config):
-        handle_no_cache(ctx)
-
-    from wily.commands.index import index
-
-    index(config=config, include_message=message, wrap=wrap)
+    pass
 
 
 @cli.command(
@@ -206,26 +170,7 @@ def index(ctx, message, wrap):
 @click.pass_context
 def rank(ctx, path, metric, revision, limit, desc, threshold, wrap):
     """Rank files, methods and functions in order of any metrics, e.g. complexity."""
-    config = ctx.obj["CONFIG"]
-
-    if not exists(config):
-        handle_no_cache(ctx)
-
-    from wily.commands.rank import rank
-
-    logger.debug(
-        "Running rank on %s for metric %s and revision %s", path, metric, revision
-    )
-    rank(
-        config=config,
-        path=path,
-        metric=metric,
-        revision_index=revision,
-        limit=limit,
-        threshold=threshold,
-        descending=desc,
-        wrap=wrap,
-    )
+    pass
 
 
 @cli.command(help=_("""Show metrics for a given file."""))
@@ -271,40 +216,7 @@ def report(
     ctx, file, metrics, number, message, format, console_format, output, changes, wrap
 ):
     """Show metrics for a given file."""
-    config = ctx.obj["CONFIG"]
-
-    if not exists(config):
-        handle_no_cache(ctx)
-
-    if not metrics:
-        metrics = get_default_metrics(config)
-        logger.info("Using default metrics %s", metrics)
-
-    new_output = Path().cwd()
-    if output:
-        new_output = new_output / Path(output)
-    else:
-        new_output = new_output / "wily_report" / "index.html"
-
-    style = get_style(console_format)
-
-    from wily.commands.report import report
-
-    logger.debug("Running report on %s for metric %s", file, metrics)
-    logger.debug("Output format is %s", format)
-
-    report(
-        config=config,
-        path=file,
-        metrics=metrics,
-        n=number,
-        output=new_output,
-        include_message=message,
-        format=ReportFormat[format],
-        console_format=style,
-        changes_only=changes,
-        wrap=wrap,
-    )
+    pass
 
 
 @cli.command(help=_("""Show the differences in metrics for each file."""))
@@ -338,30 +250,7 @@ def report(
 @click.pass_context
 def diff(ctx, files, metrics, all, detail, revision, wrap):
     """Show the differences in metrics for each file."""
-    config = ctx.obj["CONFIG"]
-
-    if not exists(config):
-        handle_no_cache(ctx)
-
-    if not metrics:
-        metrics = get_default_metrics(config)
-        logger.info("Using default metrics %s", metrics)
-    else:
-        metrics = metrics.split(",")
-        logger.info("Using specified metrics %s", metrics)
-
-    from wily.commands.diff import diff
-
-    logger.debug("Running diff on %s for metric %s", files, metrics)
-    diff(
-        config=config,
-        files=files,
-        metrics=metrics,
-        changes_only=not all,
-        detail=detail,
-        revision=revision,
-        wrap=wrap,
-    )
+    pass
 
 
 @cli.command(
@@ -426,32 +315,7 @@ def diff(ctx, files, metrics, all, detail, revision, wrap):
 @click.pass_context
 def graph(ctx, path, metrics, output, x_axis, changes, aggregate, shared_js, cdn_js):
     """Output report to specified HTML path, e.g. reports/out.html."""
-    config = ctx.obj["CONFIG"]
-
-    if not exists(config):
-        handle_no_cache(ctx)
-
-    # Embed plotly.min.js in the HTML file by default
-    plotlyjs = True
-    if shared_js:
-        plotlyjs = "directory"
-    # CDN takes precedence over directory
-    if cdn_js:
-        plotlyjs = "cdn"
-
-    from wily.commands.graph import graph
-
-    logger.debug("Running report on %s for metrics %s", path, metrics)
-    graph(
-        config=config,
-        path=path,
-        metrics=metrics,
-        output=output,
-        x_axis=x_axis,
-        changes=changes,
-        aggregate=aggregate,
-        plotlyjs=plotlyjs,
-    )
+    pass
 
 
 @cli.command(help=_("""Clear the .wily/ folder."""))
@@ -472,14 +336,7 @@ def clean(ctx, yes):
 @click.pass_context
 def list_metrics(ctx, wrap):
     """List the available metrics."""
-    config = ctx.obj["CONFIG"]
-
-    if not exists(config):
-        handle_no_cache(ctx)
-
-    from wily.commands.list_metrics import list_metrics
-
-    list_metrics(wrap)
+    pass
 
 
 @cli.command("setup", help=_("""Run a guided setup to build the wily cache."""))
@@ -491,18 +348,7 @@ def setup(ctx):
 
 def handle_no_cache(context):
     """Handle lack-of-cache error, prompt user for index process."""
-    logger.error(
-        _("Could not locate wily cache, the cache is required to provide insights.")
-    )
-    p = input(_("Do you want to run setup and index your project now? [y/N]"))
-    if p.lower() != "y":
-        exit(1)
-    else:
-        revisions = input(_("How many previous git revisions do you want to index? : "))
-        revisions = int(revisions)
-        path = input(_("Path to your source files; comma-separated for multiple: "))
-        paths = path.split(",")
-        context.invoke(build, max_revisions=revisions, targets=paths, operators=None)
+    pass
 
 
 if __name__ == "__main__":  # pragma: no cover

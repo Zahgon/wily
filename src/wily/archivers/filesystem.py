@@ -35,22 +35,7 @@ class FilesystemArchiver(BaseArchiver):
         :param max_revisions: the maximum number of revisions.
         :return: A list of revisions.
         """
-        mtime = os.path.getmtime(path)
-        key = hashlib.sha1(str(mtime).encode()).hexdigest()[:7]
-        return [
-            Revision(
-                key=key,
-                author_name="Local User",  # Don't want to leak local data
-                author_email="-",  # as above
-                date=int(mtime),
-                message="None",
-                tracked_files=[],
-                tracked_dirs=[],
-                added_files=[],
-                modified_files=[],
-                deleted_files=[],
-            )
-        ]
+        pass
 
     def checkout(self, revision: Revision, options: Dict[Any, Any]) -> None:
         """

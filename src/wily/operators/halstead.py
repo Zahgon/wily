@@ -115,41 +115,7 @@ class HalsteadOperator(BaseOperator):
         :param options: Any runtime options.
         :return: The operator results.
         """
-        logger.debug("Running halstead harvester")
-        results: Dict[str, Dict[str, Any]] = {}
-        for filename, details in dict(self.harvester.results).items():
-            results[filename] = {"detailed": {}, "total": {}}
-            for instance in details:
-                if isinstance(instance, list):
-                    for item in instance:
-                        function, report = item
-                        assert isinstance(report, NumberedHalsteadReport)
-                        results[filename]["detailed"][function] = self._report_to_dict(
-                            report
-                        )
-                else:
-                    if isinstance(instance, str) and instance == "error":
-                        logger.debug(
-                            "Failed to run Halstead harvester on %s : %s",
-                            filename,
-                            details["error"],
-                        )
-                        continue
-                    assert isinstance(instance, NumberedHalsteadReport)
-                    results[filename]["total"] = self._report_to_dict(instance)
-        return results
+        pass
 
     def _report_to_dict(self, report: NumberedHalsteadReport) -> Dict[str, Any]:
-        return {
-            "h1": report.h1,
-            "h2": report.h2,
-            "N1": report.N1,
-            "N2": report.N2,
-            "vocabulary": report.vocabulary,
-            "volume": report.volume,
-            "length": report.length,
-            "effort": report.effort,
-            "difficulty": report.difficulty,
-            "lineno": report.lineno,
-            "endline": report.endline,
-        }
+        pass

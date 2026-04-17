@@ -29,9 +29,7 @@ class IndexedRevision:
 
     def asdict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
-        d = asdict(self.revision)
-        d["operators"] = self.operators
-        return d
+        pass
 
     def get(
         self, config: WilyConfig, archiver: str, operator: str, path: str, key: str
@@ -45,12 +43,7 @@ class IndexedRevision:
         :param path: The path to find
         :param key: The metric key
         """
-        if not self._data:
-            self._data = cache.get(
-                config=config, archiver=archiver, revision=self.revision.key
-            )["operator_data"]
-        logger.debug("Fetching metric %s - %s for operator %s", path, key, operator)
-        return get_metric(self._data, operator, path, key)
+        pass
 
     def get_paths(self, config: WilyConfig, archiver: str, operator: str) -> List[str]:
         """
@@ -62,12 +55,7 @@ class IndexedRevision:
 
         :return: A list of paths
         """
-        if not self._data:
-            self._data = cache.get(
-                config=config, archiver=archiver, revision=self.revision.key
-            )["operator_data"]
-        logger.debug("Fetching keys")
-        return list(self._data[operator].keys())
+        pass
 
     def store(
         self, config: WilyConfig, archiver: Union[Archiver, str], stats: Dict[str, Any]
@@ -79,8 +67,7 @@ class IndexedRevision:
         :param archiver: The archiver.
         :param stats: The data
         """
-        self._data = stats
-        return cache.store(config, archiver, self.revision, stats)
+        pass
 
 
 class Index:
@@ -149,17 +136,11 @@ class Index:
         :param revision: The revision.
         :param operators: Operators for the revision.
         """
-        ir = IndexedRevision(
-            revision=revision, operators=[operator.name for operator in operators]
-        )
-        self._revisions[revision.key] = ir
-        return ir
+        pass
 
     def save(self):
         """Save the index data back to the wily cache."""
-        data = [i.asdict() for i in self._revisions.values()]
-        logger.debug("Saving data")
-        cache.store_archiver_index(self.config, self.archiver, data)
+        pass
 
 
 class State:
@@ -199,9 +180,4 @@ class State:
 
     def ensure_exists(self):
         """Ensure that cache directory exists."""
-        if not cache.exists(self.config):
-            logger.debug("Wily cache not found, creating.")
-            cache.create(self.config)
-            logger.debug("Created wily cache")
-        else:
-            logger.debug("Cache %s exists", self.config.cache_path)
+        pass

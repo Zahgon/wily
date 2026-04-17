@@ -72,8 +72,4 @@ class MaintainabilityIndexOperator(BaseOperator):
         :param options: Any runtime options.
         :return: The operator results.
         """
-        logger.debug("Running maintainability harvester")
-        results = {}
-        for filename, metrics in dict(self.harvester.results).items():
-            results[filename] = {"total": metrics}
-        return results
+        pass
