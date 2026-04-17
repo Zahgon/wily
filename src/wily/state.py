@@ -25,20 +25,7 @@ class IndexedRevision:
     @staticmethod
     def fromdict(d: Dict[str, Any]) -> "IndexedRevision":
         """Instantiate from a dictionary."""
-        rev = Revision(
-            key=d["key"],
-            author_name=d["author_name"],
-            author_email=d["author_email"],
-            date=d["date"],
-            message=d["message"],
-            tracked_files=d["tracked_files"] if "tracked_files" in d else [],
-            tracked_dirs=d["tracked_dirs"] if "tracked_dirs" in d else [],
-            added_files=d["added_files"] if "added_files" in d else [],
-            modified_files=d["modified_files"] if "modified_files" in d else [],
-            deleted_files=d["deleted_files"] if "deleted_files" in d else [],
-        )
-        operators = d["operators"]
-        return IndexedRevision(revision=rev, operators=operators)
+        pass
 
     def asdict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
@@ -130,7 +117,7 @@ class Index:
     @property
     def last_revision(self) -> IndexedRevision:
         """Return the most recent revision."""
-        return next(iter(self._revisions.values()))
+        pass
 
     @property
     def revisions(self) -> List[IndexedRevision]:
@@ -140,7 +127,7 @@ class Index:
     @property
     def revision_keys(self) -> List[str]:
         """List of all the revision indexes."""
-        return list(self._revisions.keys())
+        pass
 
     def __contains__(self, item: Union[str, Revision]) -> bool:
         """Check if index contains `item`."""

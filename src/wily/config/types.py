@@ -40,21 +40,13 @@ class WilyConfig:
     @property
     def cache_path(self):
         """Path to the cache."""
-        if not self._cache_path:  # type: ignore
-            self._cache_path = generate_cache_path(pathlib.Path(self.path).absolute())  # type: ignore
-        return self._cache_path  # type: ignore
+        pass
 
     @cache_path.setter
     def cache_path(self, value):
         """Override the cache path."""
-        logger.debug("Setting custom cache path to %s", value)
-        self._cache_path = value  # type: ignore
+        pass
 
     @staticmethod
     def _parse_to_list(string, separator=","):
-        items = []
-        for raw_item in string.split(separator):
-            item = raw_item.strip()
-            if item:
-                items.append(item)
-        return items
+        pass

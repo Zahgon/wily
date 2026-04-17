@@ -74,22 +74,7 @@ You can also graph specific metrics in a browser with:
 @click.pass_context
 def cli(ctx, debug, config, path, cache):
     """CLI entry point."""
-    ctx.ensure_object(dict)
-    ctx.obj["DEBUG"] = debug
-    if debug:
-        logger.setLevel("DEBUG")
-    else:
-        logger.setLevel("INFO")
-
-    ctx.obj["CONFIG"] = load_config(config)
-    if path:
-        logger.debug("Fixing path to %s", path)
-        ctx.obj["CONFIG"].path = path
-    if cache:
-        logger.debug("Fixing cache to %s", cache)
-        ctx.obj["CONFIG"].cache_path = cache
-    logger.debug("Loaded configuration from %s", config)
-    logger.debug("Capturing logs to %s", WILY_LOG_NAME)
+    pass
 
 
 @cli.command(help=_("""Build the wily cache."""))
@@ -474,20 +459,7 @@ def graph(ctx, path, metrics, output, x_axis, changes, aggregate, shared_js, cdn
 @click.pass_context
 def clean(ctx, yes):
     """Clear the .wily/ folder."""
-    config = ctx.obj["CONFIG"]
-
-    if not exists(config):
-        logger.info(_("Wily cache does not exist, nothing to remove."))
-        exit(0)
-
-    if not yes:
-        p = input(_("Are you sure you want to delete wily cache? [y/N]"))
-        if p.lower() != "y":
-            exit(0)
-
-    from wily.cache import clean
-
-    clean(config)
+    pass
 
 
 @cli.command("list-metrics", help=_("""List the available metrics."""))
@@ -514,7 +486,7 @@ def list_metrics(ctx, wrap):
 @click.pass_context
 def setup(ctx):
     """Run a guided setup to build the wily cache."""
-    handle_no_cache(ctx)
+    pass
 
 
 def handle_no_cache(context):

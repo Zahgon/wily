@@ -80,11 +80,7 @@ def clean(config: WilyConfig) -> None:
 
     :param config: The configuration
     """
-    if not exists(config):
-        logger.debug("Wily cache does not exist, skipping")
-        return
-    shutil.rmtree(config.cache_path)
-    logger.debug("Deleted wily cache")
+    pass
 
 
 def store(
@@ -211,8 +207,7 @@ def has_archiver_index(config: WilyConfig, archiver: Union[Archiver, str]) -> bo
 
     :return: Whether the archiver's index exists.
     """
-    root = pathlib.Path(config.cache_path) / str(archiver) / "index.json"
-    return root.exists()
+    pass
 
 
 def get_archiver_index(config: WilyConfig, archiver: Union[Archiver, str]) -> Any:

@@ -22,9 +22,7 @@ def mode(data):
 
     If there is more than 1 modal value, arbitrarily return the first top n.
     """
-    c = Counter(data)
-    mode, freq = c.most_common(1)[0]
-    return mode
+    pass
 
 
 class MaintainabilityIndexOperator(BaseOperator):

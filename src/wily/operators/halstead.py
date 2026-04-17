@@ -42,29 +42,16 @@ class NumberedHalsteadVisitor(HalsteadVisitor):
 
     def visit_FunctionDef(self, node):
         """Visit functions and methods, adding class name if any, lineno and endline."""
-        if self.class_name:
-            node.name = f"{self.class_name}.{node.name}"
-        super().visit_FunctionDef(node)
-        self.function_visitors[-1].lineno = node.lineno
-        # FuncDef is missing end_lineno in Python 3.7
-        endline = node.end_lineno if hasattr(node, "end_lineno") else None
-        self.function_visitors[-1].endline = endline
+        pass
 
     def visit_ClassDef(self, node):
         """Visit classes, adding class name and creating visitors for methods."""
-        self.class_name = node.name
-        for child in node.body:
-            visitor = NumberedHalsteadVisitor(classname=self.class_name)
-            visitor.visit(child)
-            self.function_visitors.extend(visitor.function_visitors)
-        self.class_name = None
+        pass
 
 
 def number_report(visitor):
     """Create a report with added lineno and endline."""
-    return NumberedHalsteadReport(
-        *(halstead_visitor_report(visitor) + (visitor.lineno, visitor.endline))
-    )
+    pass
 
 
 class NumberedHCHarvester(harvesters.HCHarvester):
@@ -72,11 +59,7 @@ class NumberedHCHarvester(harvesters.HCHarvester):
 
     def gobble(self, fobj):
         """Analyze the content of the file object, adding line numbers for blocks."""
-        code = fobj.read()
-        visitor = NumberedHalsteadVisitor.from_ast(ast.parse(code))
-        total = number_report(visitor)
-        functions = [(v.context, number_report(v)) for v in visitor.function_visitors]
-        return Halstead(total, functions)
+        pass
 
 
 class HalsteadOperator(BaseOperator):
